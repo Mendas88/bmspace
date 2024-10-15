@@ -591,17 +591,21 @@ def bms_request(bms, ver=b"\x32\x35",adr=b"\x30\x30",cid1=b"\x30\x30",cid2=b"\x3
     global debug_output
     
     request = b'\x7e'
+    print("Version: ", ver)
     request += ver
     request += adr
+    print("Address: ", adr)
     request += cid1
+    print("CID1: ", cid1)
     request += cid2
+    print("CID2: ", cid2)
 
     if not(LENID):
         LENID = len(info)
-        #print("Length: ", LENID)
+        print("Length: ", LENID)
         LENID = bytes(format(LENID, '03X'), "ASCII")
 
-    #print("LENID: ", LENID)
+    print("LENID: ", LENID)
 
     if LENID == b'000':
         LCHKSUM = '0'
@@ -609,7 +613,7 @@ def bms_request(bms, ver=b"\x32\x35",adr=b"\x30\x30",cid1=b"\x30\x30",cid2=b"\x3
         LCHKSUM = lchksum_calc(LENID)
         if LCHKSUM == False:
             return(False,"Error calculating LCHKSUM)")
-    #print("LCHKSUM: ", LCHKSUM)
+    print("LCHKSUM: ", LCHKSUM)
     request += bytes(LCHKSUM, "ASCII")
     print("LCHKSUM: ", bytes(LCHKSUM, "ASCII"))
     request += LENID
