@@ -611,12 +611,15 @@ def bms_request(bms, ver=b"\x32\x35",adr=b"\x30\x30",cid1=b"\x34\x36",cid2=b"\x3
             return(False,"Error calculating LCHKSUM)")
     #print("LCHKSUM: ", LCHKSUM)
     request += bytes(LCHKSUM, "ASCII")
+    print("LCHKSUM: ", bytes(LCHKSUM, "ASCII"))
     request += LENID
     request += info
+    print("info: ", info)
     CHKSUM = bytes(chksum_calc(request), "ASCII")
     if CHKSUM == False:
         return(False,"Error calculating CHKSUM)")
     request += CHKSUM
+    print("CHKSUM: ", CHKSUM)
     request += b'\x0d'
 
     if debug_output > 2:
