@@ -585,7 +585,7 @@ def lchksum_calc(lenid):
 
     return(chksum)
 
-def bms_request(bms, ver=b"\x32\x35",adr=b"\x30\x30",cid1=b"\x34\x36",cid2=b"\x43\x31",info=b"",LENID=False):
+def bms_request(bms, ver=b"\x32\x35",adr=b"\x30\x30",cid1=b"\x34\x36",cid2=b"\x30\x30",info=b"",LENID=False):
 
     global bms_connected
     global debug_output
