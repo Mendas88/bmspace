@@ -585,27 +585,23 @@ def lchksum_calc(lenid):
 
     return(chksum)
 
-def bms_request(bms, ver=b"\x32\x35",adr=b"\x30\x30",cid1=b"\x30\x30",cid2=b"\x30\x30",info=b"",LENID=False):
+def bms_request(bms, ver=b"\x32\x35",adr=b"\x30\x30",cid1=b"\x34\x36",cid2=b"\x43\x31",info=b"",LENID=False):
 
     global bms_connected
     global debug_output
     
     request = b'\x7e'
-    print("Version: ", ver)
     request += ver
     request += adr
-    print("Address: ", adr)
     request += cid1
-    print("CID1: ", cid1)
     request += cid2
-    print("CID2: ", cid2)
 
     if not(LENID):
         LENID = len(info)
-        print("Length: ", LENID)
+       # print("Length: ", LENID)
         LENID = bytes(format(LENID, '03X'), "ASCII")
 
-    print("LENID: ", LENID)
+    #print("LENID: ", LENID)
 
     if LENID == b'000':
         LCHKSUM = '0'
@@ -613,17 +609,13 @@ def bms_request(bms, ver=b"\x32\x35",adr=b"\x30\x30",cid1=b"\x30\x30",cid2=b"\x3
         LCHKSUM = lchksum_calc(LENID)
         if LCHKSUM == False:
             return(False,"Error calculating LCHKSUM)")
-    print("LCHKSUM: ", LCHKSUM)
     request += bytes(LCHKSUM, "ASCII")
-    print("LCHKSUM: ", bytes(LCHKSUM, "ASCII"))
     request += LENID
     request += info
-    print("info: ", info)
     CHKSUM = bytes(chksum_calc(request), "ASCII")
     if CHKSUM == False:
         return(False,"Error calculating CHKSUM)")
     request += CHKSUM
-    print("CHKSUM: ", CHKSUM)
     request += b'\x0d'
 
     if debug_output > 2:
@@ -737,8 +729,9 @@ def bms_getAnalogData(bms,batNumber):
         return(False,inc_data)
 
     try:
-
-        packs = int(inc_data[byte_index:byte_index+2],16)
+        # Hard coding single pack to prevent thousands of entities being created in MQTT
+        #packs = int(inc_data[byte_index:byte_index+2],16)
+        packs = 1
         if print_initial:
             print("Packs: " + str(packs))
         byte_index += 2
